@@ -19,7 +19,7 @@ class PaymentServiceImpl implements PaymentService {
 
     @Override
     public HttpStatus pay(PayForDishDto payForDishDto) {
-        User user = restTemplate.getForObject("http://user-service/user/" + payForDishDto.getCustomerId(), User.class);
+        User user = restTemplate.getForEntity("http://user-service/user/" + payForDishDto.getCustomerId(), User.class).getBody();
         if (user == null) throw new AssertionError();
         if (user.getBalance() >= payForDishDto.getPrice()) {
             HttpStatus status = restTemplate.postForObject("http://user-service/withdraw/" + payForDishDto.getCustomerId(), payForDishDto.getPrice(), HttpStatus.class);

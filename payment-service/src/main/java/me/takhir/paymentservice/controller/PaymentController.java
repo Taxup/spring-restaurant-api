@@ -15,7 +15,7 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
-    @GetMapping("/buy")
+    @PostMapping("/buy")
     public ResponseEntity<HttpStatus> buy(@RequestBody PayForDishDto payForDishDto) {
         return ResponseEntity.ok(paymentService.pay(payForDishDto));
     }

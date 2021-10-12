@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 
@@ -34,8 +33,8 @@ class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Dish getDish(String dishName, Long customerId) throws Exception {
-        Dish dish = restTemplate.getForObject("http://kithcen-service/dish/" + dishName, Dish.class);
-        HttpStatus status = restTemplate.postForObject("http://payment-service/buy/", new PayForDishDto(customerId, dish.getPrice()), HttpStatus.class);
+        Dish dish = restTemplate.getForEntity("http://kitchen-service/dish/" + dishName, Dish.class).getBody();
+        HttpStatus status = restTemplate.postForEntity("http://payment-service/buy/", new PayForDishDto(customerId, dish.getPrice()), HttpStatus.class).getStatusCode();
 
         if (status == HttpStatus.OK) return dish;
         else throw new Exception("something went wrong");
