@@ -34,7 +34,7 @@ class DishServiceIpml implements DishService {
 
     @Override
     public Dish getDish(String dishName) {
-        Dish requiredDish = dishes.get(0);
+        Dish requiredDish = null;
         for (Dish dish: dishes) {
             if (dishName.equals(dish.getName())) {
                 requiredDish = dish;

@@ -22,7 +22,7 @@ class PaymentServiceImpl implements PaymentService {
 
     @Override
     public User getUser(Long userId) {
-        User user = users.get(0);
+        User user = null;
         for (User u: users) {
             if (userId.equals(u.getId())) {
                 user = u;
