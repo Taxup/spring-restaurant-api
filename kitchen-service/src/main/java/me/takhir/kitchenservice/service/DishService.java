@@ -11,6 +11,8 @@ public interface DishService {
 
     Menu getMenu();
 
+    Dish getDish(String dishName);
+
 }
 
 @Service
@@ -24,6 +26,11 @@ class DishServiceIpml implements DishService {
         dishes.add(new Dish( 2L, "Tort" , 6100.0));
         menu.setDishes(dishes);
         return menu;
+    }
+
+    @Override
+    public Dish getDish(String dishName) {
+        return new Dish( 1L, "Bread" , 150.0);
     }
 
 }

@@ -23,7 +23,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/order/{dishName}")
-    public ResponseEntity<Dish> order(@PathVariable String dishName, @RequestParam Long customerId) {
+    public ResponseEntity<Dish> order(@PathVariable String dishName, @RequestParam Long customerId) throws Exception {
         return ResponseEntity.ok(kitchenService.getDish(dishName, customerId));
     }
 
