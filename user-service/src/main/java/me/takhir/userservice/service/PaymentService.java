@@ -21,6 +21,14 @@ class PaymentServiceImpl implements PaymentService {
     }};
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "getUserFallback",
+            threadPoolKey = "getUser",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public User getUser(Long userId) {
         User user = null;
         for (User u: users) {
@@ -33,6 +41,14 @@ class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "payFallback",
+            threadPoolKey = "pay",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public HttpStatus pay(Long userId, Double amount) {
         User user = getUser(userId);
         user.setBalance(user.getBalance() - amount);

@@ -1,5 +1,7 @@
 package me.takhir.restaurantapi.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.restaurantapi.model.Dish;
 import me.takhir.restaurantapi.model.Menu;
 import me.takhir.restaurantapi.model.PayForDishDto;
@@ -26,12 +28,28 @@ class KitchenServiceImpl implements KitchenService {
     RestTemplate restTemplate;
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "getMenuFallback",
+            threadPoolKey = "getMenu",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public List<Dish> getMenu() {
         Menu menu = restTemplate.getForObject("http://kitchen-service/menu", Menu.class);
         return menu.getDishes();
     }
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "getDishFallback",
+            threadPoolKey = "getDish",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public Dish getDish(String dishName, Long customerId) throws Exception {
         Dish dish = restTemplate.getForEntity("http://kitchen-service/dish/" + dishName, Dish.class).getBody();
         HttpStatus status = restTemplate.postForEntity("http://payment-service/buy/", new PayForDishDto(customerId, dish.getPrice()), HttpStatus.class).getStatusCode();

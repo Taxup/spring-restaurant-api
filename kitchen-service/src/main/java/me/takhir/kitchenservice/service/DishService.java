@@ -1,5 +1,7 @@
 package me.takhir.kitchenservice.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.kitchenservice.model.Dish;
 import me.takhir.kitchenservice.model.Menu;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,14 @@ class DishServiceIpml implements DishService {
     };
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "getMenuFallback",
+            threadPoolKey = "getMenu",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public Menu getMenu() {
         Menu menu = new Menu();
         menu.setDishes(dishes);
@@ -33,6 +43,14 @@ class DishServiceIpml implements DishService {
     }
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "getDishFallback",
+            threadPoolKey = "getDish",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public Dish getDish(String dishName) {
         Dish requiredDish = null;
         for (Dish dish: dishes) {

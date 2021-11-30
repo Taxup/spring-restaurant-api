@@ -18,6 +18,14 @@ class PaymentServiceImpl implements PaymentService {
     RestTemplate restTemplate;
 
     @Override
+    @HystrixCommand(
+            fallbackMethod = "payFallback",
+            threadPoolKey = "pay",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "100"),
+                    @HystrixProperty(name = "maxQueueSize", value = "50"),
+            }
+    )
     public HttpStatus pay(PayForDishDto payForDishDto) {
         User user = restTemplate.getForEntity("http://user-service/user/" + payForDishDto.getCustomerId(), User.class).getBody();
         if (user == null) throw new AssertionError();
