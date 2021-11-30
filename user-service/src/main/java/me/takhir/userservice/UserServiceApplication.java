@@ -10,6 +10,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableCircuitBreaker
 @EnableHystrixDashboard
 @EnableHystrix
+@EnableZuulProxy
 public class UserServiceApplication {
 
     public static void main(String[] args) {
