@@ -1,5 +1,7 @@
 package me.takhir.paymentservice.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.paymentservice.model.PayForDishDto;
 import me.takhir.paymentservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,10 @@ class PaymentServiceImpl implements PaymentService {
             HttpStatus status = restTemplate.postForObject("http://user-service/withdraw/" + payForDishDto.getCustomerId(), payForDishDto.getPrice(), HttpStatus.class);
             return status;
         }
+        return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    public HttpStatus payFallback(PayForDishDto payForDishDto) {
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }

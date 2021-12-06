@@ -28,29 +28,12 @@ class DishServiceIpml implements DishService {
     };
 
     @Override
-    @HystrixCommand(
-            fallbackMethod = "getMenuFallback",
-            threadPoolKey = "getMenu",
-            threadPoolProperties = {
-                    @HystrixProperty(name = "coreSize", value = "100"),
-                    @HystrixProperty(name = "maxQueueSize", value = "50"),
-            }
-    )
     public Menu getMenu() {
         Menu menu = new Menu();
         menu.setDishes(dishes);
         return menu;
     }
 
-    @Override
-    @HystrixCommand(
-            fallbackMethod = "getDishFallback",
-            threadPoolKey = "getDish",
-            threadPoolProperties = {
-                    @HystrixProperty(name = "coreSize", value = "100"),
-                    @HystrixProperty(name = "maxQueueSize", value = "50"),
-            }
-    )
     public Dish getDish(String dishName) {
         Dish requiredDish = null;
         for (Dish dish: dishes) {

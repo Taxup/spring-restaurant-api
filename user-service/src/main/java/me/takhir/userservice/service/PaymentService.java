@@ -1,5 +1,7 @@
 package me.takhir.userservice.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.userservice.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,6 @@ class PaymentServiceImpl implements PaymentService {
         add(new User(2L, "Aralbaev", 1500000.0));
     }};
 
-    @Override
-    @HystrixCommand(
-            fallbackMethod = "getUserFallback",
-            threadPoolKey = "getUser",
-            threadPoolProperties = {
-                    @HystrixProperty(name = "coreSize", value = "100"),
-                    @HystrixProperty(name = "maxQueueSize", value = "50"),
-            }
-    )
     public User getUser(Long userId) {
         User user = null;
         for (User u: users) {
@@ -40,15 +33,6 @@ class PaymentServiceImpl implements PaymentService {
         return user;
     }
 
-    @Override
-    @HystrixCommand(
-            fallbackMethod = "payFallback",
-            threadPoolKey = "pay",
-            threadPoolProperties = {
-                    @HystrixProperty(name = "coreSize", value = "100"),
-                    @HystrixProperty(name = "maxQueueSize", value = "50"),
-            }
-    )
     public HttpStatus pay(Long userId, Double amount) {
         User user = getUser(userId);
         user.setBalance(user.getBalance() - amount);

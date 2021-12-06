@@ -41,6 +41,10 @@ class KitchenServiceImpl implements KitchenService {
         return menu.getDishes();
     }
 
+    public List<Dish> getMenuFallback() {
+        return List.of(new Dish(111L, "", 0.0));
+    }
+
     @Override
     @HystrixCommand(
             fallbackMethod = "getDishFallback",
@@ -56,6 +60,10 @@ class KitchenServiceImpl implements KitchenService {
 
         if (status == HttpStatus.OK) return dish;
         else throw new Exception("something went wrong");
+    }
+
+    public Dish getDishFallback(String dishName, Long customerId) {
+        return new Dish(111L, "", 0.0);
     }
 }
 

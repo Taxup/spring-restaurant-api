@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableCircuitBreaker
 @EnableHystrixDashboard
 @EnableHystrix
-@EnableZuulProxy
 public class RestaurantApiApplication {
 
     public static void main(String[] args) {
