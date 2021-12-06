@@ -5,7 +5,11 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.restaurantapi.model.Dish;
 import me.takhir.restaurantapi.model.Menu;
 import me.takhir.restaurantapi.model.PayForDishDto;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +41,14 @@ class KitchenServiceImpl implements KitchenService {
             }
     )
     public List<Dish> getMenu() {
-        Menu menu = restTemplate.getForObject("http://kitchen-service/menu", Menu.class);
+        String apiCredentials = "rest-client:p@ssword";
+        String base64Credentials = new String(Base64.encodeBase64(apiCredentials.getBytes()));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + base64Credentials);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        Menu menu = restTemplate.exchange("http://kitchen-service/menu", HttpMethod.GET, entity, Menu.class).getBody();
         return menu.getDishes();
     }
 
