@@ -35,17 +35,17 @@ public class RestaurantApiApplication {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setConnectTimeout(3000);
 
-		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-
-		credentialsProvider.setCredentials(AuthScope.ANY,
-				new UsernamePasswordCredentials("rest-client", "p@ssword"));
-
-		HttpClient client = HttpClientBuilder
-				.create()
-				.setDefaultCredentialsProvider(credentialsProvider)
-				.build();
-
-		requestFactory.setHttpClient(client);
+//		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+//
+//		credentialsProvider.setCredentials(AuthScope.ANY,
+//				new UsernamePasswordCredentials("rest-client", "p@ssword"));
+//
+//		HttpClient client = HttpClientBuilder
+//				.create()
+//				.setDefaultCredentialsProvider(credentialsProvider)
+//				.build();
+//
+//		requestFactory.setHttpClient(client);
 
         return new RestTemplate(requestFactory);
     }

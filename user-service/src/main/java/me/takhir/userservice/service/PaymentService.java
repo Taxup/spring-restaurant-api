@@ -1,7 +1,5 @@
 package me.takhir.userservice.service;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import me.takhir.userservice.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

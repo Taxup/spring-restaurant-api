@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,7 +54,9 @@ class KitchenServiceImpl implements KitchenService {
     }
 
     public List<Dish> getMenuFallback() {
-        return List.of(new Dish(111L, "", 0.0));
+        List<Dish> list = new ArrayList<>();
+        list.add(new Dish(111L, "", 0.0));
+        return list;
     }
 
     @Override
